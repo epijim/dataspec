@@ -58,7 +58,7 @@ summaryspecs <- function(
     if (output_type == "kable") {
     output <- knitr::kable(
       output,
-      caption = paste0("Summary of the dataframe of ",dfname),
+      caption = paste0("Summary of the ",data_type," of ",dfname,". It has ",data_rows," rows"),
       row.names = FALSE
     )
     }
