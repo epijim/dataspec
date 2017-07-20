@@ -3,15 +3,16 @@
 #' @param data The dataframe
 #' @param output_type Output type required. For now, if not kable you get a dataframe
 #' @return Summarise a dataframe in a table
-#' @examples
-#' summaryspecs(titanic)
+#' @importFrom utils packageVersion sessionInfo capture.output packageDescription
+#' @export
+
 summaryspecs <- function(
   data,
   output_type = "kable"
   ) {
   # data checks
     # is it a dataframe?
-    if (! (is(data, "data.frame") )) {
+    if (!is.data.frame(data) ) {
       ## tibble is automatically a data frame
       if (is.matrix(data)) {
         data <- as.data.frame(data)
@@ -21,22 +22,6 @@ summaryspecs <- function(
   # Name of dataframe
     # Extract the dataframe name
     dfname <- deparse(substitute(data))
-
-    the_lhs <- function() {
-      parents <- lapply(sys.frames(), parent.env)
-
-      is_magrittr_env <-
-        vapply(parents, identical, logical(1), y = environment(`%>%`))
-
-      if (any(is_magrittr_env)) {
-        deparse(get("lhs", sys.frames()[[max(which(is_magrittr_env))]]))
-      }
-    }
-
-    #Now if data are added as part of a magrittr pipe then use this "fix"
-    if (dfname==".") {
-      dfname <- the_lhs()
-    }
 
   ## Summarise
     data_type <- class(data)
