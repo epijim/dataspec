@@ -2,7 +2,7 @@
 #'
 #' @param data The dataframe
 #' @param output_type Output type required. For now, if not kable you get a dataframe
-#' @return Summarise a dataframe in a table \code{x} and \code{y}
+#' @return Summarise a dataframe in a table
 #' @examples
 #' summaryspecs(titanic)
 summaryspecs <- function(
