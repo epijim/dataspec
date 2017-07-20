@@ -1,7 +1,7 @@
 #' Add together two numbers
 #'
 #' @param data The dataframe
-#' @param output_type Output type required. For now, if not kable you get a df
+#' @param output_type Output type required. For now, if not kable you get a dataframe
 #' @return Summarise a dataframe in a table \code{x} and \code{y}
 #' @examples
 #' summaryspecs(titanic)
