@@ -1,12 +1,15 @@
 Package: dataspec
+Type: Package
 Title: Automated descriptions of a dataset
 Version: 0.0.0.9000
 Authors@R: person("James", "Black", email = "james@epijim.uk", role = c("aut", "cre"))
-Description: Builds a simple description of your data.
+Description: Build a simple description of your data, for use within analyses.
 Depends: R (>= 3.3.3)
 License: Apache License 2.0
 Encoding: UTF-8
 LazyData: true
+URL: https://github.com/epijim/dataspec
+BugReports: https://github.com/epijim/dataspec/issues
 RoxygenNote: 6.0.1
 Imports:
   knitr
