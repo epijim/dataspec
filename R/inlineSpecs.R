@@ -7,14 +7,14 @@
 #' @export
 #' @examples
 #' d_data <- data.frame(
-#'   time = as.Date('2009-01-01') + 0:9,
-#'   X = rnorm(10, 0, 1),
-#'   Y = rnorm(10, 0, 2),
-#'   Z = rnorm(10, 0, 4)
+#'   Time = as.Date('2009-01-01') + 0:9,
+#'   Colours = rep(c("red", "blue"),5),
+#'   Numbers = rnorm(10, 0, 10)
 #' )
-#' summaryspecs(d_data)
+#' d_data$Potatoes <- rep(c("sweet",NA,"russet","french-fried","roasted"),2)
+#' inlineSpecs(d_data)
 
-summaryspecs <- function(
+inlineSpecs <- function(
   data,
   output_type = "kable"
   ) {
@@ -24,7 +24,7 @@ summaryspecs <- function(
       ## tibble is automatically a data frame
       if (is.matrix(data)) {
         data <- as.data.frame(data)
-      } else stop("clean requires a data.frame, tibble or matrix as input")
+      } else stop("inlineSpecs requires a data.frame, tibble or matrix as input")
     }
 
   # Name of dataframe
@@ -35,23 +35,36 @@ summaryspecs <- function(
     data_type <- class(data)
     data_rows <- nrow(data)
     col_names <- names(data)
-    col_type <- unlist(as.data.frame(sapply(data, class))[1,])
+    col_type <- sapply(data, class)
     col_missing <- sapply(data, function(x) sum(is.na(x)))
-    col_min <- apply(data,2,min,na.rm=TRUE)
-    col_max <- apply(data,2,max,na.rm=TRUE)
+    col_minmax <- paste(apply(data,2,min,na.rm=TRUE),"to",apply(data,2,max,na.rm=TRUE))
+    col_unique <- paste(apply(data,2,dplyr::n_distinct,na.rm=TRUE),"levels")
 
     output <- data.frame(
       Variable = col_names,
       Type = col_type,
       Missing = paste0(col_missing," ",round(100*col_missing/data_rows),"%"),
-      Min = col_min,
-      Max = col_max
+      MinMax = col_minmax,
+      Levels = col_unique,
+      stringsAsFactors = FALSE
+    )
+    output  <- dplyr::mutate(
+      output,
+      Details = ifelse(
+        col_type %in% c("factor", "character"),
+        Levels, MinMax
+        )
+      )
+
+    output  <- dplyr::select(
+      output,
+      Variable,Type,Details
     )
 
     if (output_type == "kable") {
     output <- knitr::kable(
       output,
-      caption = paste0("Summary of the ",data_type," of ",dfname,". It has ",data_rows," rows"),
+      caption = paste0("Summary of the ",data_type," ",dfname,". It has ",data_rows," rows"),
       row.names = FALSE
     )
     }
