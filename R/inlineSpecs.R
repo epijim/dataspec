@@ -1,4 +1,4 @@
-#' Add together two numbers
+#' Make a table explaining data
 #'
 #' @param data The dataframe
 #' @param output_type Output type required. For now, if not kable you get a dataframe
